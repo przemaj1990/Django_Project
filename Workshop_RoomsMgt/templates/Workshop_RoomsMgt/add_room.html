@@ -1,0 +1,28 @@
+{% extends "Workshop_RoomsMgt/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+  <div class="form-group">
+    <label>Room Name:</label>
+    <input type="Name" class="form-control" name="Name" aria-describedby="emailHelp" placeholder="Enter name">
+    <small id="emailHelp" class="form-text text-muted">Remember to name the rooms after the Polish heroes fighting in the November Uprising</small>
+  </div>
+  <div class="form-group">
+    <label>Capacity</label>
+    <input type="number" class="form-control" name="Capacity" placeholder="Capacity">
+  </div>
+  <div class="form-group">
+    <label>Projector_availability</label>
+    <select class="form-control" name="projector_availability">
+        <option value="True">True</option>
+        <option value="False">False</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

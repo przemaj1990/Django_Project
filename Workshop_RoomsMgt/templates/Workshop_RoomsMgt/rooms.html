@@ -1,0 +1,38 @@
+{% extends "Workshop_RoomsMgt/base.html" %}
+{% block content %}
+
+
+            <div class="col-md-23">
+              <div class="content-section">
+                <h3>User Manage Rooms Bar</h3>
+                <p class='text-muted'>You can add new room here or reserve one of already existing rooms.
+                  <ul class="list-group">
+                    <a href="{% url 'new' %}" class="list-group-item list-group-item-action">Add new Room</a>
+                    <a href="#" class="list-group-item list-group-item-action">Reserve existing room</a>
+                  </ul>
+                </p>
+              </div>
+            </div>
+
+
+            <div class="col-md-20">
+
+                <h3>All Rooms:</h3>
+
+    {% for r in Room %}
+            <div class="card mb-3" style="width: 45rem;">
+                <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="http://images10.fotosik.pl/414/97b69672e60bf433.jpg" class="card-img-top" alt="Room"></div>
+                                <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{ r.name }}</h5>
+                <p class="card-text">Reservation status</p>
+                    <a href="#" class="card-link">Room Details</a>
+              </div>
+                </div>
+                 </div>
+                </div>
+    {% endfor %}
+                </div>
+{% endblock %}
