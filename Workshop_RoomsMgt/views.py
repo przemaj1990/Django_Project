@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 import datetime
 
@@ -210,15 +210,27 @@ def reservation(request, pk):
         }
         return render(request, 'Workshop_RoomsMgt/reservation.html', context)
     if request.method == "POST":
+        today = datetime.date.today()
         dates = request.POST['date']
+        d = datetime.datetime.strptime(dates, '%Y-%m-%d').date()
         comments = request.POST['comment']
-        Reservation.objects.create(
-            date=dates,
-            comment=comments,
-            rooms=Room.objects.get(pk=pk),
-        )
-        messages.success(request, 'Your reservation has been added sucessfully! ')
-        return redirect('rooms')
+        if d > today:
+            Reservation.objects.create(
+                date=d,
+                comment=comments,
+                rooms=Room.objects.get(pk=pk),
+            )
+            messages.success(request, 'Reservation successfully added! ')
+            response = HttpResponseRedirect('/roomsmgt/room/{}'.format(pk))
+            return response
+        if d == today:
+            messages.warning(request, 'It appear that you room is already booked for today ')
+            response = HttpResponseRedirect('/roomsmgt/room/reservation/{}'.format(pk))
+            return response
+        if d < today:
+            messages.warning(request, 'It appear that you choose wrong date, would you like to try again ? ')
+            response = HttpResponseRedirect('/roomsmgt/room/reservation/{}'.format(pk))
+            return response
 
 # Generalny widok do dodawania rezerwacji na każdej sali.
 def reservation_select(request):
@@ -228,18 +240,22 @@ def reservation_select(request):
         }
         return render(request, 'Workshop_RoomsMgt/reservation_select.html', context)
     if request.method == "POST":
+        today = datetime.date.today()
         PK = int(request.POST['rooms'])
-        print(PK)
         dates = request.POST['date']
-        print(dates)
+        d = datetime.datetime.strptime(dates, '%Y-%m-%d').date()
         comments = request.POST['comment']
-        print(comments)
-        room = Room.objects.get(pk=PK)
-        print(room.name)
-        Reservation.objects.create(
-            date=dates,
-            comment=comments,
-            rooms=Room.objects.get(pk=PK),
-        )
-        messages.success(request, 'Your reservation has been added sucessfully! ')
-        return redirect('rooms')
+        if d > today:
+            Reservation.objects.create(
+                date=dates,
+                comment=comments,
+                rooms=Room.objects.get(pk=PK),
+            )
+            messages.success(request, 'Reservation successfully added! ')
+            return redirect('rooms')
+        if d == today:
+            messages.success(request, 'It appear that you room is already booked for today')
+            return redirect('reservation')
+        if d < today:
+            messages.success(request, 'It appear that you choose wrong date, would you like to try again ?')
+            return redirect('reservation')
