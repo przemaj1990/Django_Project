@@ -20,15 +20,18 @@
                 <h3>All Rooms:</h3>
 
     {% for r in Room %}
-            <div class="card mb-3" style="width: 45rem;">
+            <div class="card mb-4" style="width: 45rem;">
                 <div class="row no-gutters">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <img src="http://images10.fotosik.pl/414/97b69672e60bf433.jpg" class="card-img-top" alt="Room"></div>
-                                <div class="col-md-8">
+                                <div class="col-md-10">
               <div class="card-body">
                 <h5 class="card-title">{{ r.name }}</h5>
                 <p class="card-text">Reservation status</p>
-                    <a href="#" class="card-link">Room Details</a>
+                    <a href="{{ r.pk }}" class="card-link">Room Details</a>
+                    <a href="#" class="card-link">Reserve Room</a>
+                    <a href="modify/{{ r.pk }}" class="card-link">Edit Room</a>
+                    <a href="delete/{{ r.pk }}" class="card-link">Delete Room</a>
               </div>
                 </div>
                  </div>
