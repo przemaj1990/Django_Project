@@ -9,6 +9,7 @@
                   <ul class="list-group">
                     <a href="{% url 'new' %}" class="list-group-item list-group-item-action">Add new Room</a>
                     <a href="#" class="list-group-item list-group-item-action">Reserve existing room</a>
+                    <p class="list-group-item list-group-item-action">Date now: {{ now }}</p>
                   </ul>
                 </p>
               </div>
@@ -26,8 +27,15 @@
                             <img src="http://images10.fotosik.pl/414/97b69672e60bf433.jpg" class="card-img-top" alt="Room"></div>
                                 <div class="col-md-10">
               <div class="card-body">
-                <h5 class="card-title">{{ r.name }}</h5>
-                <p class="card-text">Reservation status</p>
+                <h5 class="card-title">Room: {{ r.name }} ({{r.capacity}})</h5>
+                  <p class="card-text">Reservation:</p>
+<!--                  {% if r.date != now %}-->
+<!--                  <p class="card-text">Reservation status:</p>-->
+<!--                  <p class="alert alert-success">Reservation status: Free for today! </p>-->
+<!--                  {% else %}-->
+<!--                  <p class="card-text">Reservation status:</p>-->
+<!--                  <p class="alert alert-danger">Reservation status: Reserved for today! </p>-->
+<!--                  {% endif %}-->
                     <a href="{{ r.pk }}" class="card-link">Room Details</a>
                     <a href="#" class="card-link">Reserve Room</a>
                     <a href="modify/{{ r.pk }}" class="card-link">Edit Room</a>

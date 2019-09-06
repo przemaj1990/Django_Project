@@ -13,6 +13,9 @@ class Room(models.Model):
         default=True
     )
 
+    def __str__(self):
+        return self.name
+
 class Reservation(models.Model):
     date = models.DateField(
         verbose_name='Date',

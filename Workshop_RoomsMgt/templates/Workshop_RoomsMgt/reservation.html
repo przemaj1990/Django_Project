@@ -1,0 +1,21 @@
+{% extends "Workshop_RoomsMgt/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+    <h5 class="card-title">Reservation od room: {{ Room.name }} with capacity: {{ Room.capacity }}</h5>
+  <div class="form-group">
+    <label>Choose date when you would like to reserve room:</label>
+    <input type="date" class="form-control" name="date" aria-describedby="emailHelp" placeholder="Enter date">
+    <small id="emailHelp" class="form-text text-muted">On what day you would like to reserve this room:</small>
+  </div>
+  <div class="form-group">
+    <label>comment</label>
+    <input type="text" class="form-control" name="comment" placeholder="Comment">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add Reservation</button>
+</form>
+
+{% endblock %}
