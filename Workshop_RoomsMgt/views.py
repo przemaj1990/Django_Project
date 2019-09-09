@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.db.models import Q
 import datetime
 
 
@@ -122,11 +123,30 @@ def preparing_rooms3(request):
     return HttpResponse(return_str)
 
 # widok wszystkich pokoii:
+# Def dla sercha.
 def rooms(request):
+    today = datetime.date.today()
+    Rooms = Room.objects.all()
+    name = request.GET.get('name')
+    min = request.GET.get('min')
+    date = request.GET.get('date')
+    pa = bool(request.GET.get('pa'))
+    if name:
+        Rooms = Rooms.filter(
+            Q(name__icontains=name)
+        ).distinct()
+    if min:
+        Rooms = Rooms.filter(
+            Q(capacity__gte=min)
+        ).distinct()
+    if pa:
+        Rooms = Rooms.filter(
+            Q(projector_availability=pa)
+        ).distinct()
     context = {
-        'Room': Room.objects.all(),
-        'Reservation': Reservation.objects.all(),
-        'now': datetime.date.today()
+        'Room': Rooms,
+        # 'Reservation': Reservation.objects.filter(date__gte=today),
+        'today': today
     }
     return render(request, 'Workshop_RoomsMgt/rooms.html', context)
 
@@ -155,10 +175,9 @@ def add_room(request):
 def room_detail(request, pk):
     if request.method == 'GET':
         today = datetime.date.today()
-        r = Reservation.objects.filter(rooms=Room.objects.get(pk=pk)).filter(date__gte=today).order_by('date')
         context = {
             'Room': Room.objects.get(pk=pk),
-            'Reservation': r
+            'Reservation': Reservation.objects.filter(rooms=Room.objects.get(pk=pk)).order_by('-date')
         }
         return render(request, 'Workshop_RoomsMgt/room_detail.html', context)
 
@@ -223,6 +242,7 @@ def reservation(request, pk):
             messages.success(request, 'Reservation successfully added! ')
             response = HttpResponseRedirect('/roomsmgt/room/{}'.format(pk))
             return response
+        # rezerwacja jest na dzisiaj a powinna być wg zarezerwowanych.
         if d == today:
             messages.warning(request, 'It appear that you room is already booked for today ')
             response = HttpResponseRedirect('/roomsmgt/room/reservation/{}'.format(pk))

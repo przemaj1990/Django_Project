@@ -12,13 +12,13 @@
                 <li class="list-group-item list-group-item-light">Projector_availability: {{ Room.projector_availability }}</li>
               </ul>
               <div class="card-body">
-                    <a href="#" class="card-link">Reserve Room</a>
+                    <a href="reservation/{{ Room.pk }}" class="card-link">Reserve Room</a>
                     <a href="modify/{{ Room.pk }}" class="card-link">Edit Room</a>
                     <a href="delete/{{ Room.pk }}" class="card-link">Delete Room</a>
               </div>
             </p>
               <p class='text-muted'>Here you can get information about current reservation of this room:
-              {% for r in Reservation  %}
+              {% for r in Reservation %}
               <ul class="list-group">
                 <div class="card mb-4" style="width: 43rem;">
                 <li class="list-group-item list-group-item-light">Reservation: {{ r.comment }}</li>

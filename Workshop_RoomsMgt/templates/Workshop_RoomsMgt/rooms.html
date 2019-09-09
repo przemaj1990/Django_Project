@@ -16,6 +16,31 @@
             </div>
 
 
+
+        <form method="GET" action="">
+            <div class="content-section">
+            <div class="form-group">
+
+            <h3>Search</h3>
+        <label>Please provide name of Room:</label>
+        <input class="form-control" type="text" name="name" placeholder="Name of Room"></input>
+        <label>Please provide min number of guest in room:</label>
+        <input class="form-control" type="number" name="min"placeholder="Min nr of guest"></input>
+        <label>When you plan to book a room:</label>
+        <input class="form-control" type="date" name="date" placeholder="Date"></input>
+        <label>Projector_availability</label>
+        <select class="form-control" name="pa">
+            <option></option>
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+    </div>
+          <button type="submit" class="btn btn-primary">Search!</button>
+            </div>
+        </form>
+
+
+
             <div class="col-md-20">
 
                 <h3>All Rooms:</h3>
@@ -28,13 +53,11 @@
                                 <div class="col-md-10">
               <div class="card-body">
                 <h5 class="card-title">Room: {{ r.name }} ({{r.capacity}})</h5>
-                  <p class="card-text">Reservation:</p>
-<!--                  {% if r.date != now %}-->
-<!--                  <p class="card-text">Reservation status:</p>-->
-<!--                  <p class="alert alert-success">Reservation status: Free for today! </p>-->
+                  <p class="card-text">Reservation: {{ r.Rooms.first.date }}</p>
+<!--                  {% if Reservation %}-->
+<!--                  <p class="card-text">Reservation Status: Free today! </p>-->
 <!--                  {% else %}-->
-<!--                  <p class="card-text">Reservation status:</p>-->
-<!--                  <p class="alert alert-danger">Reservation status: Reserved for today! </p>-->
+<!--                  <p class="card-text">Reservation Status: Already booked! </p>-->
 <!--                  {% endif %}-->
                     <a href="{{ r.pk }}" class="card-link">Room Details</a>
                     <a href="reservation/{{ r.pk }}" class="card-link">Reserve Room</a>

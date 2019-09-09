@@ -27,5 +27,6 @@ class Reservation(models.Model):
     rooms = models.ForeignKey(
         Room,
         verbose_name="Rooms",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='Rooms'
     )
