@@ -145,8 +145,8 @@ def rooms(request):
         ).distinct()
     context = {
         'Room': Rooms,
-        # 'Reservation': Reservation.objects.filter(date__gte=today),
-        'today': today
+        'today': today,
+        'available': False
     }
     return render(request, 'Workshop_RoomsMgt/rooms.html', context)
 
@@ -174,7 +174,6 @@ def add_room(request):
 # Reserwacje filtrowane po dacie i przekazywane do strony.
 def room_detail(request, pk):
     if request.method == 'GET':
-        today = datetime.date.today()
         context = {
             'Room': Room.objects.get(pk=pk),
             'Reservation': Reservation.objects.filter(rooms=Room.objects.get(pk=pk)).order_by('-date')
@@ -233,6 +232,13 @@ def reservation(request, pk):
         dates = request.POST['date']
         d = datetime.datetime.strptime(dates, '%Y-%m-%d').date()
         comments = request.POST['comment']
+
+        # Stworzenie listy z wszystkimi rezerwacjami na dzisiaj:
+        r = Reservation.objects.filter(rooms=Room.objects.get(pk=pk)).filter(date=d)
+        today_res = []
+        for re in r:
+            today_res.append(re.date)
+
         if d > today:
             Reservation.objects.create(
                 date=d,
@@ -242,11 +248,20 @@ def reservation(request, pk):
             messages.success(request, 'Reservation successfully added! ')
             response = HttpResponseRedirect('/roomsmgt/room/{}'.format(pk))
             return response
-        # rezerwacja jest na dzisiaj a powinna być wg zarezerwowanych.
         if d == today:
-            messages.warning(request, 'It appear that you room is already booked for today ')
-            response = HttpResponseRedirect('/roomsmgt/room/reservation/{}'.format(pk))
-            return response
+            if d not in today_res:
+                Reservation.objects.create(
+                    date=d,
+                    comment=comments,
+                    rooms=Room.objects.get(pk=pk),
+                )
+                messages.success(request, 'Reservation successfully added! ')
+                response = HttpResponseRedirect('/roomsmgt/room/{}'.format(pk))
+                return response
+            if d in today_res:
+                messages.warning(request, 'It appear that you room is already booked for today ')
+                response = HttpResponseRedirect('/roomsmgt/room/reservation/{}'.format(pk))
+                return response
         if d < today:
             messages.warning(request, 'It appear that you choose wrong date, would you like to try again ? ')
             response = HttpResponseRedirect('/roomsmgt/room/reservation/{}'.format(pk))
