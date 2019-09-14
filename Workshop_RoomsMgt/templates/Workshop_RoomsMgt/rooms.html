@@ -53,11 +53,16 @@
                                 <div class="col-md-10">
               <div class="card-body">
                 <h5 class="card-title">Room: {{ r.name|capfirst }} ({{r.capacity}})</h5>
-                  {% for reservation in r.Rooms.all %}
-                      {% if reservation.date == today %}
-                    <p class="alert alert-danger">Reservation: Room already booked for today!</p>
-                      {% endif %}
-                  {% endfor %}
+                  {% if r.today_check %}
+                    <p class="alert alert-danger">Reservation: Room already booked for today!</p>-->
+                  {% else %}
+                    <p class="alert alert-success">Reservation: Room free for today!</p>-->
+                  {% endif %}
+<!--                  {% for reservation in r.Rooms.all %}-->
+<!--                      {% if reservation.date == today %}-->
+<!--                    <p class="alert alert-danger">Reservation: Room already booked for today!</p>-->
+<!--                      {% endif %}-->
+<!--                  {% endfor %}-->
                     <a href="{{ r.pk }}" class="card-link">Room Details</a>
                     <a href="reservation/{{ r.pk }}" class="card-link">Reserve Room</a>
                     <a href="modify/{{ r.pk }}" class="card-link">Edit Room</a>

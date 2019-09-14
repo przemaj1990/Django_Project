@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.db.models import Q
 import datetime
+from django.views import View
 
 
 # using module from django:
@@ -122,6 +123,7 @@ def preparing_rooms3(request):
     return_str = "Dodano!"
     return HttpResponse(return_str)
 
+
 # widok wszystkich pokoii:
 # Def dla sercha.
 def rooms(request):
@@ -142,6 +144,10 @@ def rooms(request):
     if pa:
         Rooms = Rooms.filter(
             Q(projector_availability=pa)
+        ).distinct()
+    if date:
+        Rooms = Rooms.filter(
+            ~Q(Rooms=Reservation.objects.get(date=date))
         ).distinct()
     context = {
         'Room': Rooms,

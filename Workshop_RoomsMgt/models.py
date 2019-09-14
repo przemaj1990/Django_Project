@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+
 
 class Room(models.Model):
     name = models.CharField(
@@ -15,6 +17,18 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
+
+    def today_check(self):
+        today = datetime.date.today()
+        today_res = []
+        r = self.Rooms.all()
+        for d in r:
+            today_res.append(d.date)
+        if today in today_res:
+            return True
+        else:
+            return False
+
 
 class Reservation(models.Model):
     date = models.DateField(

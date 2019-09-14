@@ -5,7 +5,6 @@ from .views import preparing_rooms, preparing_rooms2, preparing_rooms3
 from .views import rooms, add_room, modify_room, delete_room, room_detail, reservation, reservation_select
 
 
-
 # Main paths for Workshop 3 Rooms Mgt:
 
 urlpatterns = [
